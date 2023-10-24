@@ -11,6 +11,7 @@ incluya todo lo que le parezca pertinente.
 5. Cree una tabla, factura con los siguientes campos idFactura,
 cliente, total , fecha . Llene aleatoriamente unos 10 registros
 6. Cree un endpoint para recuperar las facturas.
+
 Para todos los endpoint. Validar campos obligatorios, como son idUsuario
 para GET, POST y PUT. Y como opcionales username, password,
 usuario y nombre, para POST y PUT. Validar cualquier error que pueda
