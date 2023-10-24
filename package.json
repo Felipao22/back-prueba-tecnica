@@ -4,7 +4,8 @@
   "description": "Prueba técnica",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -L"
+    "start": "nodemon -L",
+    "test": "jest --detectOpenHandles"
   },
   "author": "Felipe",
   "license": "ISC",
@@ -24,7 +25,9 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "mocha": "^8.2.1",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "supertest": "^6.3.3"
   }
 }

@@ -71,7 +71,7 @@ async function updateUserController(req, res) {
         .status(200)
         .json({ message: "Usuario modificado", modification });
     } else {
-      return res.status(404).json({ message: "Usuario no encontado" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
   } catch (error) {
     console.error(`Error: ${error.message}`);
