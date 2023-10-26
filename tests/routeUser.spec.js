@@ -60,4 +60,34 @@ describe("createUserController", () => {
       "Debe proporcionar todos los campos requeridos."
     );
   });
+  describe("changePasswordController", () => {
+    it("should change a password by userName", async () => {
+      const response = await request(app)
+        .put("/user/change-password/Felipe2")
+        .send({ oldPassword: "Felipe22", newPassword: "Felipe" });
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(
+        "Contraseña actualizada correctamente"
+      );
+    });
+
+    it("should handle user not found", async () => {
+      const response = await request(app)
+        .put("/user/change-password/Fel")
+        .send({ newPassword: "Dante" });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Usuario no encontrado");
+    });
+
+    it("should handle oldPassword incorrect", async () => {
+      const response = await request(app)
+        .put("/user/change-password/Felipe2")
+        .send({ oldPassword: "Dante", newPassword: "Felipe22" });
+
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Contraseña incorrecta");
+    });
+  });
 });

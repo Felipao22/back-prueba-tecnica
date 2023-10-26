@@ -2,12 +2,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const {
-  DB_USER,
-  DB_PASSWORD,
-  DB_HOST,
-  DB_NAME
-} = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 let sequelize =
   process.env.NODE_ENV === "production"
@@ -33,11 +28,10 @@ let sequelize =
         },
         ssl: true,
       })
-    : new Sequelize(
-        `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/siw`,
-        { logging: false, native: false }
-      );
-
+    : new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/siw`, {
+        logging: false,
+        native: false,
+      });
 
 const basename = path.basename(__filename);
 
@@ -68,7 +62,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Usuario, Factura } = sequelize.models;
 // Aca vendrian las relaciones
 Usuario.hasMany(Factura);
-Factura.belongsTo(Usuario, { through: "usuario_factura" })
+Factura.belongsTo(Usuario, { through: "usuario_factura" });
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

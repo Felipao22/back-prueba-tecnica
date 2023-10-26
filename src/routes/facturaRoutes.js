@@ -1,11 +1,13 @@
-const { Router } = require ("express");
-const { getFacturasController, createFacturasController } = require("../controllers/facturaControllers");
+const { Router } = require("express");
+const {
+  getFacturasController,
+  createFacturasController,
+} = require("../controllers/facturaControllers");
 
 const router = Router();
 
 router.get("/", getFacturasController);
 
-router.post("/", createFacturasController)
+router.post("/", createFacturasController);
 
 module.exports = router;
-

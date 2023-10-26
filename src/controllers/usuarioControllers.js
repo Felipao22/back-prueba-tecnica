@@ -62,6 +62,27 @@ async function updateUserController(req, res) {
   }
 
   try {
+    const existingUser = await Usuario.findOne({
+      where: { idUsuario: idUsuario },
+    });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (
+      modification.userName &&
+      modification.userName !== existingUser.userName
+    ) {
+      const userWithNewUserName = await Usuario.findOne({
+        where: { userName: modification.userName },
+      });
+
+      if (userWithNewUserName) {
+        return res.status(400).json({ message: "El Usuario ya existe" });
+      }
+    }
+
     const [numUpdatedRows] = await Usuario.update(modification, {
       where: { idUsuario: idUsuario },
     });
@@ -112,6 +133,7 @@ async function loginController(req, res) {
   try {
     const userLogin = await Usuario.findOne({
       where: { userName },
+      include: [{ model: Factura }],
     });
 
     if (!userLogin) {
@@ -139,6 +161,31 @@ async function logOutController(req, res) {
   }
 }
 
+async function changePasswordController(req, res) {
+  const { userName } = req.params;
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const user = await Usuario.findOne({
+      where: { userName },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    } else if (user.password !== oldPassword) {
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+    } else {
+      await Usuario.update({ password: newPassword }, { where: { userName } });
+      return res
+        .status(200)
+        .json({ message: "Contraseña actualizada correctamente" });
+    }
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
 module.exports = {
   getUserController,
   updateUserController,
@@ -146,4 +193,5 @@ module.exports = {
   createUserController,
   loginController,
   logOutController,
+  changePasswordController,
 };
